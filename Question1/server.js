@@ -88,7 +88,7 @@ const data = [
     rating: 2.74,
     discount: 15,
     availability: "yes",
-  }
+  },
 ];
 
 app.get(
@@ -96,13 +96,19 @@ app.get(
   (req, res) => {
     const companyname = req.params.companyname;
     const categoryname = req.params.categoryname;
-    const minPrice = req.query.minPrice || 0;
-    const maxPrice = req.query.maxPrice || Number.MAX_SAFE_INTEGER;
+    const n = req.query.top || 10;
+    const sortBy = req.query.sortBy;
+    console.log(sortBy, n);
 
-    const n = req.query.top;
-
-    if (n > 10) {
-      const page = n % 10;
+    if (data[0].hasOwnProperty(sortBy)) {
+      const sortedProducts = data.sort((a, b) => a[sortBy] - b[sortBy]);
+      console.log("s");
+      res.json(sortedProducts);
+    } else {
+      sortBy = "rating";
+      const sortedProducts = data.sort((a, b) => a[sortBy] - b[sortBy]);
+      console.log("dsfgf");
+      res.json(sortedProducts);
     }
   }
 );
